@@ -7,21 +7,20 @@
 #define NUMBER   '0'
 
 int getop(char []);
-void ungets(char []);
 void push(double);
 double pop(void);
+char s[MAXOP];
 
-main(int argc, char *argv[])
-{
-    char s[MAXOP];
+main(int argc, char *argv[]){
+    int type;
     double op2;
-
-    while(--argc > 0){
-        ungets(" ");
-        ungets(*++argv);
-        switch (getop(s)){
+    int j = 1;
+    int a = argc;
+    while((argc--)>0 && j<a){
+    type = getop(argv[j++]);
+        switch (type){
         case NUMBER:
-            push(atof(s));
+            push(atof(argv[j-1]));
             break;
         case '+':
             push(pop() + pop());
@@ -41,7 +40,7 @@ main(int argc, char *argv[])
                 printf("error:zero divisor\n");
             break;
         default:
-            printf("error:unknown command %s\n", s);
+            printf("error:unknown command %s\n",s);
             argc = 1;
             break;
         }
@@ -50,33 +49,27 @@ main(int argc, char *argv[])
     return 0;
 }
 #define MAXVAL 100
-int sp = 0;
+int y = 0;
 double val[MAXVAL];
-void push(double f)
-{
-    if (sp < MAXVAL)
-        val[sp++] = f;
-    else
-    {
-        printf("error:stack full,can't push %g\n", f);
+void push(double x){
+    if (y < MAXVAL)
+        val[y++] = x;
+    else{
+        printf("error:stack full,can't push %g\n", x);
     }
 }
-double pop(void)
-{
-    if (sp > 0)
-        return val[--sp];
-    else
-    {
+double pop(void){
+    if (y > 0)
+        return val[--y];
+    else{
         printf("error:stack empty\n");
         return 0.0;
     }
 }
-
 int getop(char s[])
 {
     if (*s> '9' || *s < '0')
         return *s;
     else
         return NUMBER;
-        
 }
